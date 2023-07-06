@@ -23,7 +23,10 @@ public class PlayerScript : MonoBehaviour
 
     private void ProcessMovement()
     {
-        Vector3 _direction = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        float _horizontalInput = Input.GetAxis("Horizontal");
+        float _verticalInput = Input.GetAxis("Vertical");
+
+        Vector3 _direction = new Vector3(_horizontalInput, 0f, _verticalInput);
         Vector3 _velocity = _direction * _speed;
 
         //Apply gravity
