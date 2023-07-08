@@ -6,11 +6,6 @@ public class LookX : MonoBehaviour
 {
     [SerializeField]private float _sensitivity = 5.0f;
 
-    void Start()
-    {
-        
-    }
-
     private void Update()
     {
         CalculateMouseX();
