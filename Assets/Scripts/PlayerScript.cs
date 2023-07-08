@@ -30,6 +30,8 @@ public class PlayerScript : MonoBehaviour
         //Apply gravity
         _velocity.y -= _gravity;
 
+        _velocity = transform.transform.TransformDirection(_velocity);     //Rotate player to main camera view
+
         _cController.Move(_velocity * Time.deltaTime);
     }//processMovement
 
