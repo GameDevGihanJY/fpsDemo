@@ -9,15 +9,24 @@ public class WeaponScript : MonoBehaviour
     [SerializeField] private ParticleSystem _muzzleFlashFX;
     [SerializeField] private GameObject _hitImpactEffect;
     [SerializeField] private AudioClip _shootAudio;
-
+    [SerializeField] private Camera _fpCamera;
     private AudioSource _audioSource;
+    private float _normalFOV = 60.0f;
+    private float _zoomedFOV = 25.0f;
 
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+
     }
 
     void Update()
+    {
+        Shoot();
+        ZoomWeapon();
+    }
+
+    private void Shoot()
     {
         if (Input.GetButton("Fire1"))
         {
@@ -33,6 +42,18 @@ public class WeaponScript : MonoBehaviour
         {
             _muzzleFlashFX.Stop();
             _audioSource.Stop();
+        }
+    }
+
+    private void ZoomWeapon()
+    {
+        if (Input.GetButton("Fire2"))
+        {
+            _fpCamera.fieldOfView = _zoomedFOV;
+        }
+        else
+        {
+            _fpCamera.fieldOfView = _normalFOV;
         }
     }
 
