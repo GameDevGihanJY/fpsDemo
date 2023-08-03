@@ -2,12 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class WeaponScript : MonoBehaviour
 {
-    public TextMeshProUGUI ammoDisplay;
-
     [SerializeField] private float _shootRange = 300f;
     [SerializeField] private ParticleSystem _muzzleFlashFX;
     [SerializeField] private GameObject _hitImpactEffect;
@@ -24,21 +21,18 @@ public class WeaponScript : MonoBehaviour
 
     private bool _isReload = false;
 
+    private UIManager _uiManager;
+
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
         _currentAmmo = _maxAmmo;
+
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     void Update()
-    {
-        ammoDisplay.text = _currentAmmo.ToString();
-        
-        if (_isReload)
-        {
-            return;
-        }
-
+    {      
         Shoot();
         ZoomWeapon();
         ReloadButton();
@@ -46,13 +40,10 @@ public class WeaponScript : MonoBehaviour
 
     private void ReloadButton()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && _isReload == false)
         {
             StartCoroutine(WeaponReload());
-        }
-        else
-        {
-            _isReload = false;
+            _isReload = true;
         }
     }
 
@@ -90,6 +81,9 @@ public class WeaponScript : MonoBehaviour
     private void PlayerShoot()
     {
         _currentAmmo--;
+
+        _uiManager.UpdateAmmo(_currentAmmo);
+
         RaycastHit _hitInfo;        // Variable to store raycast hit details
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out _hitInfo, _shootRange))
         { /*                      ^                               ^                             ^                 ^
@@ -114,9 +108,11 @@ public class WeaponScript : MonoBehaviour
 
     private IEnumerator WeaponReload()
     {
-        _isReload = true;
-        yield return new WaitForSeconds(1.25f);
+        yield return new WaitForSeconds(1.5f);
+        
         _currentAmmo = _maxAmmo;
         _isReload = false;
+
+        _uiManager.UpdateAmmo(_currentAmmo);
     }
 }

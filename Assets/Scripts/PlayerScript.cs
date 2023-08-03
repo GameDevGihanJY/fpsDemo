@@ -10,6 +10,8 @@ public class PlayerScript : MonoBehaviour
 
     private float _gravity = 9.81f;
 
+    public bool hasCoin = false;
+
     void Start()
     {
         _cController = GetComponent<CharacterController>();
